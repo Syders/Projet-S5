@@ -14,10 +14,12 @@ import java.util.Objects;
 public class Personne {
     private String nom;
     private String prenom;
+    private String login;
 
-    public Personne(String nom, String prenom) {
+    public Personne(String nom, String prenom,String login) {
         this.nom = nom;
         this.prenom = prenom;
+        this.login = login;
     }
 
     public String getNom() {
@@ -28,11 +30,14 @@ public class Personne {
         return prenom;
     }
 
+    public String getLogin() {
+        return login;
+    }
+
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 73 * hash + Objects.hashCode(this.nom);
-        hash = 73 * hash + Objects.hashCode(this.prenom);
+        hash = 17 * hash + Objects.hashCode(this.login);
         return hash;
     }
 
@@ -48,14 +53,13 @@ public class Personne {
             return false;
         }
         final Personne other = (Personne) obj;
-        if (!Objects.equals(this.nom, other.nom)) {
-            return false;
-        }
-        if (!Objects.equals(this.prenom, other.prenom)) {
+        if (!Objects.equals(this.login, other.login)) {
             return false;
         }
         return true;
     }
+    
+
     
     
 }
