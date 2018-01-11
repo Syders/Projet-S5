@@ -23,6 +23,7 @@ CREATE TABLE FilDiscussion
 CREATE TABLE Message
   (IdMessage INT(4),
    Texte VARCHAR(200),
+   DatePublication DATE,
    IdUtilisateur VARCHAR(30),
    IdFilDiscussion INT(3),
    CONSTRAINT pk_message PRIMARY KEY(IdMessage),
