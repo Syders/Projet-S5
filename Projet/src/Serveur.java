@@ -9,7 +9,7 @@
  * @author steven
  */
 public class Serveur extends javax.swing.JFrame {
-
+    Connect connect=new Connect();
     /**
      * Creates new form Serveur
      */
@@ -76,6 +76,11 @@ public class Serveur extends javax.swing.JFrame {
         jPanel3.setLayout(new java.awt.BorderLayout());
 
         jButton1.setText("Add");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -172,6 +177,11 @@ public class Serveur extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+               ServeurAdd sa= new ServeurAdd(connect);
+               sa.setVisible(true);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

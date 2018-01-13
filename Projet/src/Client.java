@@ -13,7 +13,7 @@
  * @author steven
  */
 public class Client extends javax.swing.JFrame {
-
+    Connect connect=new Connect();
     /**
      * Creates new form Client
      */
@@ -43,6 +43,7 @@ public class Client extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -141,6 +142,8 @@ public class Client extends javax.swing.JFrame {
             }
         });
         jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 200, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 170, -1, -1));
+        jLabel4.getAccessibleContext().setAccessibleName("");
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.CENTER);
 
@@ -148,15 +151,23 @@ public class Client extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-       Inscription i=new Inscription();
+       Inscription i=new Inscription(connect);
        i.setVisible(true);
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-       ClientMenu cm=new ClientMenu();
-       cm.setVisible(true);
-       this.dispose();
+     if(connect.utilisateurPrenom(jTextField1.getText()).equals("")){  
+         jLabel4.setText("Ce compte n'existe pas");
+     }else{  
+         if(connect.utilisateurMotDePasse(jTextField1.getText()).equals(jTextField2.getText())){
+             ClientMenu cm=new ClientMenu();
+             cm.setVisible(true);
+             this.dispose();
+         }else{
+             jLabel4.setText("Mauvais mot de passe");
+         }
+     }
     }//GEN-LAST:event_jButton2ActionPerformed
 
 
@@ -187,10 +198,8 @@ public class Client extends javax.swing.JFrame {
         }
         //</editor-fold>
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Client().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new Client().setVisible(true);
         });
     }
 
@@ -201,6 +210,7 @@ public class Client extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
