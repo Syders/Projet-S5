@@ -167,7 +167,7 @@ public class Client extends javax.swing.JFrame {
          jLabel4.setText("Ce compte n'existe pas");
      }else{  
          if(connect.utilisateurMotDePasse(jTextField1.getText()).equals(jTextField2.getText())){
-             ClientMenu cm=new ClientMenu();
+             ClientMenu cm=new ClientMenu(connect);
              cm.setVisible(true);
              this.dispose();
          }else{
