@@ -1,6 +1,5 @@
 package Interne;
 
-
 import java.util.List;
 
 /*
@@ -8,12 +7,12 @@ import java.util.List;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author steven
  */
 public class Ticket {
+
     private Integer noTicket;
     private GroupePersonne groupeDestine;
     private Message premierMessage;
@@ -25,6 +24,5 @@ public class Ticket {
         this.premierMessage = premierMessage;
         this.message = message;
     }
-    
-    
+
 }

@@ -5,11 +5,10 @@ package Interne;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author steven
  */
 public enum Status {
-    EnAttente,Recu,Lu;
+    EnAttente, Recu, Lu;
 }

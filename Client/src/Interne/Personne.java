@@ -1,6 +1,5 @@
 package Interne;
 
-
 import java.util.Objects;
 
 /*
@@ -8,17 +7,17 @@ import java.util.Objects;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author steven
  */
 public class Personne {
+
     private String nom;
     private String prenom;
     private String login;
 
-    public Personne(String nom, String prenom,String login) {
+    public Personne(String nom, String prenom, String login) {
         this.nom = nom;
         this.prenom = prenom;
         this.login = login;
@@ -60,8 +59,5 @@ public class Personne {
         }
         return true;
     }
-    
 
-    
-    
 }

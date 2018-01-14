@@ -5,8 +5,6 @@ package Interne;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import java.awt.List;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -21,239 +19,208 @@ import java.util.logging.Logger;
  * @author steven
  */
 //CTRL + SHIFT + O pour générer les imports
-
 public class Connect {
 
+    String url = "jdbc:mysql://localhost:3306/bddProjet?verifyServerCertificate=false&useSSL=true";
 
-  private void inserer(String chaine) {
+    String user = "root";
 
-    try {
+    String passwd = "";
 
-      Class.forName("com.mysql.jdbc.Driver").newInstance();
-         
+    private void inserer(String chaine) {
 
-      String url = "jdbc:mysql://localhost:3306/bddProjet?verifyServerCertificate=false&useSSL=true";
+        try {
 
-      String user = "root";
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
 
-      String passwd = "";
+            Connection conn = DriverManager.getConnection(url, user, passwd);
 
-         
+            try ( //Création d'un objet Statement
+                    Statement state = conn.createStatement()) {
 
-      Connection conn = DriverManager.getConnection(url, user, passwd);
+                state.executeUpdate(chaine);
+            }
 
-         
-
-        try ( //Création d'un objet Statement
-                Statement state = conn.createStatement()) {
-            
-            state.executeUpdate(chaine);
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+        } catch (InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-         
+    }
 
-    } catch (ClassNotFoundException | SQLException e) {
-        System.out.println("SQLException: " + e.getMessage());
-    } catch (InstantiationException | IllegalAccessException ex) {
-          Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
-      }      
+    public void ajouterUtilisateur(String IdUtilisateur, String Nom, String Prenom, String MotDePasse) {
+        inserer("INSERT INTO Utilisateur (IdUtilisateur, prenom, nom, motDePasse) VALUES ('" + IdUtilisateur + "', '" + Prenom + "', '" + Nom + "', '" + MotDePasse + "');");
+    }
 
-  }
-  
-  public void ajouterUtilisateur(String IdUtilisateur, String Nom, String Prenom, String MotDePasse) {
-      inserer("INSERT INTO Utilisateur (IdUtilisateur, prenom, nom, motDePasse) VALUES ('" + IdUtilisateur + "', '" + Prenom + "', '" + Nom + "', '" + MotDePasse + "');");
-  }
+    public void ajouterGroupeUtilisateur(String NomGroupe) {
+        inserer("INSERT INTO GroupeUtilisateur (NomGroupe) VALUES('" + NomGroupe + "');");
+    }
 
-  public void ajouterGroupeUtilisateur(String NomGroupe) {
-      inserer("INSERT INTO GroupeUtilisateur (NomGroupe) VALUES('" + NomGroupe + "');");
-  }
-  
-  public void ajouterFilDiscussion(int IdFilDiscussion, String Titre, String IdUtilisateur, String NomGroupe) {
-      inserer("INSERT INTO FilDiscussion (IdFilDiscussion,Titre,IdUtilisateur,NomGroupe) VALUES ('" + IdFilDiscussion + ", '" + Titre + "', '" + IdUtilisateur + "', '" + NomGroupe + "');");
-  }
+    public void ajouterFilDiscussion(int IdFilDiscussion, String Titre, String IdUtilisateur, String NomGroupe) {
+        inserer("INSERT INTO FilDiscussion (IdFilDiscussion,Titre,IdUtilisateur,NomGroupe) VALUES ('" + IdFilDiscussion + ", '" + Titre + "', '" + IdUtilisateur + "', '" + NomGroupe + "');");
+    }
 
-  public void ajouterMessage(int IdMessage, String Texte, String IdUtilisateur, int IdFilDiscussion) {
-      inserer("INSERT INTO Message (IdMessage,Texte,Lue,IdUtilisateur,IdFilDiscussion) VALUES ('" + IdMessage + ", '" + Texte + "', '" + IdUtilisateur + "', '" + IdFilDiscussion + "');");
-  }
-  
-  public void ajouterAppartient(String IdUtilisateur, String NomGroupe) {
-      inserer("INSERT INTO Appartient (IdUtilisateur, NomGroupe) VALUES ('" + IdUtilisateur + "', '" + NomGroupe + "')"+ ";");
-  }
+    public void ajouterMessage(int IdMessage, String Texte, String IdUtilisateur, int IdFilDiscussion) {
+        inserer("INSERT INTO Message (IdMessage,Texte,Lue,IdUtilisateur,IdFilDiscussion) VALUES ('" + IdMessage + ", '" + Texte + "', '" + IdUtilisateur + "', '" + IdFilDiscussion + "');");
+    }
 
-  public void supprimerUtilisateur(String IdUtilisateur) {
-      inserer("DELETE FROM Utilisateur WHERE IdUtilisateur = '" + IdUtilisateur + "'"+ ";");
-  }
+    public void ajouterAppartient(String IdUtilisateur, String NomGroupe) {
+        inserer("INSERT INTO Appartient (IdUtilisateur, NomGroupe) VALUES ('" + IdUtilisateur + "', '" + NomGroupe + "');");
+    }
 
-  public void supprimerGroupeUtilisateur(String NomGroupe) {
-      inserer("DELETE FROM GroupeUtilisateur WHERE NomGroupe = '" + NomGroupe + "'"+ ";");
-  }
+    public void supprimerUtilisateur(String IdUtilisateur) {
+        inserer("DELETE FROM Utilisateur WHERE IdUtilisateur = '" + IdUtilisateur + "';");
+    }
 
-  public void supprimerAppartient(String IdUtilisateur, String NomGroupe) {
-      inserer("DELETE FROM Appartient WHERE IdUtilisateur = '" + IdUtilisateur + "' and IdGrUtilisateur = '" + NomGroupe + "'"+ ";");
-  }
-  
+    public void supprimerGroupeUtilisateur(String NomGroupe) {
+        inserer("DELETE FROM GroupeUtilisateur WHERE NomGroupe = '" + NomGroupe + "';");
+    }
+
+    public void supprimerAppartient(String IdUtilisateur) {
+        inserer("DELETE FROM Appartient WHERE IdUtilisateur = '" + IdUtilisateur + "';");
+    }
+
     private int selectInt(String chaine, String champ) {
         int val = -1;
-    try {
+        try {
 
-      Class.forName("com.mysql.jdbc.Driver").newInstance();
-         
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
 
-      String url = "jdbc:mysql://localhost:3306/bddProjet?verifyServerCertificate=false&useSSL=true";
-
-      String user = "root";
-
-      String passwd = "";
-
-         
-
-      Connection conn = DriverManager.getConnection(url, user, passwd);
-
-         
+            Connection conn = DriverManager.getConnection(url, user, passwd);
 
             //L'objet ResultSet contient le résultat de la requête SQL
             try ( //Création d'un objet Statement
                     Statement state = conn.createStatement(); //L'objet ResultSet contient le résultat de la requête SQL
                     ResultSet result = state.executeQuery(chaine)) {
-                
-                while(result.next()){
+
+                while (result.next()) {
                     val = result.getInt(champ);
                 }
-                
-                
+
             }
 
-         
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+        } catch (InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-    } catch (ClassNotFoundException | SQLException e) {
-        System.out.println("SQLException: " + e.getMessage());
-    } catch (InstantiationException | IllegalAccessException ex) {
-          Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
-      }
+        return val;
+    }
 
-    return val;
-  }
-    
-  private String selectString(String chaine, String champ) {
-    String val = "";
-    try {
+    private String selectString(String chaine, String champ) {
+        String val = "";
+        try {
 
-     Class.forName("com.mysql.jdbc.Driver").newInstance();
-         
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
 
-      String url = "jdbc:mysql://localhost:3306/bddProjet";
+            Connection conn = DriverManager.getConnection(url, user, passwd);
 
-      String user = "root";
+            //L'objet ResultSet contient le résultat de la requête SQL
+            try ( //Création d'un objet Statement
+                    Statement state = conn.createStatement(); //L'objet ResultSet contient le résultat de la requête SQL
+                    ResultSet result = state.executeQuery(chaine)) {
+                while (result.next()) {
+                    val = result.getString(champ);
+                }
 
-      String passwd = "";
+            }
 
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+        } catch (InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return val;
+    }
 
-      Connection conn = DriverManager.getConnection(url, user, passwd);
+    private List selectGroupe(String chaine, String champ) {
+        List val = new List();
+        try {
 
-         
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
 
-          //L'objet ResultSet contient le résultat de la requête SQL
-          try ( //Création d'un objet Statement
-                  Statement state = conn.createStatement(); //L'objet ResultSet contient le résultat de la requête SQL
-                  ResultSet result = state.executeQuery(chaine)) {
-                  while(result.next()){
-                      val=result.getString(champ);
-                  }
-              
-              
-          }
+            Connection conn = DriverManager.getConnection(url, user, passwd);
 
-         
+            //L'objet ResultSet contient le résultat de la requête SQL
+            try ( //Création d'un objet Statement
+                    Statement state = conn.createStatement(); //L'objet ResultSet contient le résultat de la requête SQL
+                    ResultSet result = state.executeQuery(chaine)) {
+                while (result.next()) {
+                    val.add(result.getString(champ));
+                }
 
-    } catch (ClassNotFoundException | SQLException e) {
-        System.out.println("SQLException: " + e.getMessage());
-    } catch (InstantiationException | IllegalAccessException ex) {
-          Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
-      }
-    return val;
-  }
-  
-  
-  private List selectGroupe(String chaine, String champ) {
-    List val = new List();
-    try {
+            }
 
-     Class.forName("com.mysql.jdbc.Driver").newInstance();
-         
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println("SQLException: " + e.getMessage());
+        } catch (InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return val;
+    }
 
-      String url = "jdbc:mysql://localhost:3306/bddProjet";
+    public String utilisateurNom(String IdUtilisateur) {
+        return selectString("SELECT Nom FROM Utilisateur WHERE IdUtilisateur = '" + IdUtilisateur + "';", "Nom");
+    }
 
-      String user = "root";
+    public String utilisateurPrenom(String IdUtilisateur) {
+        return selectString("SELECT Prenom FROM Utilisateur WHERE IdUtilisateur = '" + IdUtilisateur + "';", "Prenom");
+    }
 
-      String passwd = "";
+    public String utilisateurMotDePasse(String IdUtilisateur) {
+        return selectString("SELECT MotDePasse FROM Utilisateur WHERE IdUtilisateur = '" + IdUtilisateur + "';", "MotDePasse");
+    }
 
+    public String filDiscussionTitre(int IdFilDiscussion) {
+        return selectString("SELECT Titre FROM FilDiscussion WHERE IdFilDiscussion = " + IdFilDiscussion + "';", "Titre");
+    }
 
-      Connection conn = DriverManager.getConnection(url, user, passwd);
+    public String filDiscussionIdUtilisateur(int IdFilDiscussion) {
+        return selectString("SELECT IdUtilisateur FROM FilDiscussion WHERE IdFilDiscussion = " + IdFilDiscussion + "';", "IdUtilisateur");
+    }
 
-         
+    public String filDiscussionNomGroupe(int IdFilDiscussion) {
+        return selectString("SELECT NomGroupe FROM FilDiscussion WHERE IdFilDiscussion = " + IdFilDiscussion + "';", "NomGroupe");
+    }
 
-          //L'objet ResultSet contient le résultat de la requête SQL
-          try ( //Création d'un objet Statement
-                  Statement state = conn.createStatement(); //L'objet ResultSet contient le résultat de la requête SQL
-                  ResultSet result = state.executeQuery(chaine)) {
-                  while(result.next()){
-                      val.add(result.getString(champ));
-                  }
-              
-              
-          }
+    public String messageTexte(int IdMessage) {
+        return selectString("SELECT Texte FROM Message WHERE IdMessage = " + IdMessage + "';", "Texte");
+    }
 
-         
+    public String messageIdUtilisateur(int IdMessage) {
+        return selectString("SELECT IdUtilisateur FROM Message WHERE IdMessage = " + IdMessage + "';", "IdUtilisateur");
+    }
 
-    } catch (ClassNotFoundException | SQLException e) {
-        System.out.println("SQLException: " + e.getMessage());
-    } catch (InstantiationException | IllegalAccessException ex) {
-          Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
-      }
-    return val;
-  }
-  
-  public String utilisateurNom(String IdUtilisateur) {
-      return selectString("SELECT Nom FROM Utilisateur WHERE IdUtilisateur = '" + IdUtilisateur + "';", "Nom");
-  }
-  
-  public String utilisateurPrenom(String IdUtilisateur) {
-      return selectString("SELECT Prenom FROM Utilisateur WHERE IdUtilisateur = '" + IdUtilisateur + "';", "Prenom");
-  }
-  
-  public String utilisateurMotDePasse(String IdUtilisateur) {
-      return selectString("SELECT MotDePasse FROM Utilisateur WHERE IdUtilisateur = '" + IdUtilisateur + "';", "MotDePasse");
-  }
-  
-  public String filDiscussionTitre(int IdFilDiscussion) {
-      return selectString("SELECT Titre FROM FilDiscussion WHERE IdFilDiscussion = " + IdFilDiscussion + "';", "Titre");
-  }
-  
-  public String filDiscussionIdUtilisateur(int IdFilDiscussion) {
-      return selectString("SELECT IdUtilisateur FROM FilDiscussion WHERE IdFilDiscussion = " + IdFilDiscussion+ "';","IdUtilisateur");
-  }
-  
-  public String filDiscussionNomGroupe(int IdFilDiscussion) {
-      return selectString("SELECT NomGroupe FROM FilDiscussion WHERE IdFilDiscussion = " + IdFilDiscussion + "';", "NomGroupe");
-  }
-  
-  public String messageTexte(int IdMessage) {
-      return selectString("SELECT Texte FROM Message WHERE IdMessage = " + IdMessage + "';", "Texte");
-  }
-  
-  public String messageIdUtilisateur(int IdMessage) {
-      return selectString("SELECT IdUtilisateur FROM Message WHERE IdMessage = " + IdMessage + "';", "IdUtilisateur");
-  }
-  
-  public int messageIdFilDiscussion(int IdMessage) {
-      return selectInt("SELECT IdFilDiscussion FROM Message WHERE IdMessage = " + IdMessage + "';", "IdFilDiscussion");
-  }
-  
+    public int messageIdFilDiscussion(int IdMessage) {
+        return selectInt("SELECT IdFilDiscussion FROM Message WHERE IdMessage = " + IdMessage + "';", "IdFilDiscussion");
+    }
+
     /**
      *
      * @return
      */
     public List groupeNomsGroupe() {
-      return selectGroupe("SELECT * FROM GroupeUtilisateur ;","NomGroupe");
-  }
+        return selectGroupe("SELECT * FROM GroupeUtilisateur ;", "NomGroupe");
+    }
+
+    /**
+     *
+     * @param nomGroupe
+     * @return
+     */
+    public List appartientListPersonne(String nomGroupe) {
+        return selectGroupe("SELECT * FROM Appartient WHERE NomGroupe = '" + nomGroupe + "';", "IdUtilisateur");
+    }
+
+    /**
+     *
+     * @param idUtilisateur
+     * @return
+     */
+    public List appartientListGroupe(String idUtilisateur) {
+        return selectGroupe("SELECT * FROM Appartient WHERE IdUtilisateur = '" + idUtilisateur + "';", "NomGroupe");
+    }
+    
 }

@@ -1,6 +1,5 @@
 package Interne;
 
-
 import java.util.Date;
 import java.util.Objects;
 
@@ -9,12 +8,12 @@ import java.util.Objects;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author steven
  */
 public class Message {
+
     private String message;
     private Date date;
     private Personne auteur;
@@ -24,9 +23,9 @@ public class Message {
         this.date = date;
         this.auteur = auteur;
     }
-    
-    public void afficherMessage(){
-        System.out.println(auteur + " " + date + ": " + message + "\n");
+
+    public void afficherMessage() {
+        System.out.println(auteur + "(" + date + "): " + message + "\n");
     }
 
     @Override
@@ -61,7 +60,5 @@ public class Message {
         }
         return true;
     }
-    
-    
-    
+
 }
